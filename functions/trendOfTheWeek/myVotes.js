@@ -22,9 +22,10 @@ const myVotes = async function (req, res, next) {
       const currentVote = await Vote.findById(existsUser.votes[voteNumber]);
       const currentStock = await Stocks.findById(currentVote.stockId);
       votes.push({
-        id: currentStock.id,
+        id: currentVote.id,
         voteName: currentStock.name,
         type: currentStock.type,
+        stockId: currentStock.id,
       });
     }
   } catch (err) {

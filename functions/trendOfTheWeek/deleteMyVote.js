@@ -2,6 +2,7 @@ const httpError = require("./../shared/httpError");
 const Stocks = require("./../../mongodb/stock");
 const User = require("./../../mongodb/user");
 const Vote = require("./../../mongodb/vote");
+const TrendOfTheWeek = require("./../../mongodb/trendOfTheWeek");
 const deleteVote = require("./functions/deleteVote");
 
 const deleteMyVote = async function (req, res, next) {
@@ -41,7 +42,6 @@ const deleteMyVote = async function (req, res, next) {
     (vote) => vote != currentVote.id
   );
 
-  let currectTrend;
   try {
     currectTrend = await TrendOfTheWeek.findById(currentVote.trendOfTheWeekId);
   } catch (err) {

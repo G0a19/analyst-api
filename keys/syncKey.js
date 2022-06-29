@@ -3,7 +3,7 @@ const createNewKey = require("./createNewKey");
 
 createNewKey("KEY");
 
-cron.schedule("*/10 * * * *", async function () {
+cron.schedule("*/30 * * * *", async function () {
   createNewKey("KEY");
 });
 

@@ -8,6 +8,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 require("dotenv").config();
 
+const limiter = require("./routes/limiter");
 const users = require("./routes/users");
 const stocks = require("./routes/stocks");
 const trendOfTheWeek = require("./routes/trendOfTheWeek");
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(limiter);
 app.use("/users", users);
 app.use("/stocks", stocks);
 app.use("/trendoftheweek", trendOfTheWeek);

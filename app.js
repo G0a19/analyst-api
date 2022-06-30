@@ -12,6 +12,7 @@ const limiter = require("./routes/limiter");
 const users = require("./routes/users");
 const stocks = require("./routes/stocks");
 const trendOfTheWeek = require("./routes/trendOfTheWeek");
+const syncStocks = require("./routes/syncStocks");
 
 app.use(bodyParser.json());
 app.use("/uploads/images", express.static(path.join("upload", "images")));
@@ -32,6 +33,7 @@ app.use(limiter);
 app.use("/users", users);
 app.use("/stocks", stocks);
 app.use("/trendoftheweek", trendOfTheWeek);
+app.use("/sync/stocks", syncStocks);
 
 mongoose
   .connect(process.env.MONGO_URL, {

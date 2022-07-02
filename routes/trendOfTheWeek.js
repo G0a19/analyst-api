@@ -11,6 +11,7 @@ const vote = require("./../functions/trendOfTheWeek/vote");
 const myVotes = require("./../functions/trendOfTheWeek/myVotes");
 const deleteMyVote = require("../functions/trendOfTheWeek/deleteMyVote");
 const getTrend = require("../functions/trendOfTheWeek/getTrend");
+const getTrendById = require("../functions/trendOfTheWeek/getTrendById");
 const getAllTrendTypes = require("../functions/trendOfTheWeek/getAllTrendTypes");
 const getDatesOfTrends = require("../functions/trendOfTheWeek/getDatesOfTrends");
 
@@ -23,6 +24,8 @@ router.get("/gettrend/:tredtype", getTrend);
 router.get("/getalltrendtypes", getAllTrendTypes);
 
 router.get("/getdatesoftrends/:type", getDatesOfTrends);
+
+router.get("/gettrendbyid/:id", getTrendById);
 
 router.use(middleware);
 

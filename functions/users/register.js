@@ -43,7 +43,13 @@ const register = async function (req, res, next) {
       fullName: fullname,
       user: "user",
     });
-    await appendSheets("G", "I", newUser.id, new Date().toISOString(), req.ip);
+    await appendSheets(
+      "G",
+      "I",
+      newUser.id,
+      new Date().toISOString(),
+      req.socket.remoteAddress
+    );
     await newUser.save();
   } catch (err) {
     console.log(err);

@@ -4,8 +4,21 @@ const bcrypt = require("bcryptjs");
 const User = require("./../../mongodb/user");
 const appendSheets = require("./../google sheets/appendSheets");
 
+var os = require("os");
+var interfaces = os.networkInterfaces();
+
 const register = async function (req, res, next) {
   const { email, password, fullname } = req.body;
+
+  var addresses = [];
+  for (var k in interfaces) {
+    for (var k2 in interfaces[k]) {
+      var address = interfaces[k][k2];
+      if (address.family === "IPv4" && !address.internal) {
+        addresses.push(address.address);
+      }
+    }
+  }
 
   if (!email) return httpError(res, "Email is requied", 404);
   if (!validateEmailAddress(email))
@@ -48,7 +61,7 @@ const register = async function (req, res, next) {
       "I",
       newUser.id,
       new Date().toISOString(),
-      req.socket.remoteAddress
+      addresses[0]
     );
     await newUser.save();
   } catch (err) {

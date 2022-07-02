@@ -1,5 +1,4 @@
 const appendSheets = require("./../functions/google sheets/appendSheets");
-
 const { networkInterfaces } = require("os");
 
 module.exports = async (req, res, next) => {
@@ -21,7 +20,7 @@ module.exports = async (req, res, next) => {
   appendSheets(
     "H",
     "J",
-    Object.values(results)[1][0],
+    Object.values(results)[1][0] ?? "null",
     req.method,
     new Date().toISOString()
   );

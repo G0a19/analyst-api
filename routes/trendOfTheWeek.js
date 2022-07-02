@@ -23,7 +23,7 @@ router.get("/gettrend/:tredtype", getTrend);
 
 router.get("/getalltrendtypes", getAllTrendTypes);
 
-router.get("/getdatesoftrends/:type", getDatesOfTrends);
+router.get("/getdatesoftrend/:type", getDatesOfTrends);
 
 router.get("/gettrendbyid/:id", getTrendById);
 

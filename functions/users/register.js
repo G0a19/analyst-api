@@ -2,6 +2,7 @@ const httpError = require("./../shared/httpError");
 const { validateEmailAddress } = require("./../shared/validator");
 const bcrypt = require("bcryptjs");
 const User = require("./../../mongodb/user");
+const appendSheets = require("./../google sheets/appendSheets");
 
 const register = async function (req, res, next) {
   const { email, password, fullname } = req.body;
@@ -42,6 +43,7 @@ const register = async function (req, res, next) {
       fullName: fullname,
       user: "user",
     });
+    await appendSheets("G", "I", newUser.id, new Date().toISOString(), req.ip);
     await newUser.save();
   } catch (err) {
     console.log(err);

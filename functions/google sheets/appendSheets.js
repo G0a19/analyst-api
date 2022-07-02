@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 
-const googleSheetsMethod = async function (key, value, id) {
+const appendSheets = async function (key, value, value1, value2, value3) {
   const auth = new google.auth.GoogleAuth({
     keyFile: require.main.path + "/functions/google sheets/credentials.json",
     scopes: "https://www.googleapis.com/auth/spreadsheets",
@@ -17,25 +17,15 @@ const googleSheetsMethod = async function (key, value, id) {
     spreadsheetId,
   });
 
-  var request = {
+  await googleSheets.spreadsheets.values.append({
     auth,
     spreadsheetId,
     range: `Sheets1!${key}:${value}`,
-    valueInputOption: "RAW",
+    valueInputOption: "USER_ENTERED",
     resource: {
-      values: [["KEY", id]],
+      values: [[value1, value2, value3]],
     },
-  };
-
-  await googleSheets.spreadsheets.values.update(request, (err, res) => {
-    if (err) return console.log("The API returned an error: " + err);
   });
 };
 
-//   const getRows = await googleSheets.spreadsheets.values.get({
-//     auth,
-//     spreadsheetId,
-//     range: "Sheets1!B:B",
-//   });
-
-module.exports = googleSheetsMethod;
+module.exports = appendSheets;

@@ -16,7 +16,7 @@ const deleteVote = async function (
     sess.startTransaction();
     await currectUser.save();
     await currectTrend.save();
-    await currentVote.remove();
+    await currentVote.delete();
   } catch (err) {
     console.log(err);
     return httpError(res, "Delete failed", 404);

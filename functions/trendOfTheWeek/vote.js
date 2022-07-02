@@ -21,6 +21,22 @@ const vote = async function (req, res, next) {
     return httpError(res, "Something went wrong please try again later", 404);
   }
 
+  let allStocksType;
+  try {
+    allStocksType = await Stocks.find({ type: type });
+  } catch (err) {
+    console.log(err);
+    return httpError(res, "Something went wrong please try again later", 404);
+  }
+
+  const nameIsExsits = allStocksType.findIndex(
+    (stock) =>
+      stock.name.replace(" ", "").toLowerCase() ===
+      name.replace(" ", "").toLowerCase()
+  );
+  if (nameIsExsits !== -1)
+    return httpError(res, "The stock is already exists", 404);
+
   let existsStock;
   let newStock;
   if (stockId != -1) {

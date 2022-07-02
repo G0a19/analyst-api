@@ -12,6 +12,7 @@ const limiter = require("./routes/limiter");
 const users = require("./routes/users");
 const stocks = require("./routes/stocks");
 const trendOfTheWeek = require("./routes/trendOfTheWeek");
+const saveReq = require("./routes/saveReq");
 const syncStocks = require("./routes/syncStocks");
 
 app.use(bodyParser.json());
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(saveReq);
 app.use(limiter);
 app.use("/users", users);
 app.use("/stocks", stocks);

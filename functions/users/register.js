@@ -2,23 +2,9 @@ const httpError = require("./../shared/httpError");
 const { validateEmailAddress } = require("./../shared/validator");
 const bcrypt = require("bcryptjs");
 const User = require("./../../mongodb/user");
-const appendSheets = require("./../google sheets/appendSheets");
-var os = require("os");
-
-var interfaces = os.networkInterfaces();
 
 const register = async function (req, res, next) {
   const { email, password, fullname } = req.body;
-
-  var addresses = [];
-  for (var k in interfaces) {
-    for (var k2 in interfaces[k]) {
-      var address = interfaces[k][k2];
-      if (address.family === "IPv4" && !address.internal) {
-        addresses.push(address.address);
-      }
-    }
-  }
 
   if (!email) return httpError(res, "Email is requied", 404);
   if (!validateEmailAddress(email))
@@ -56,14 +42,6 @@ const register = async function (req, res, next) {
       fullName: fullname,
       user: "user",
     });
-    await appendSheets(
-      "G",
-      "I",
-      newUser.id,
-      new Date().toISOString(),
-      addresses[0],
-      "REGISTER"
-    );
     await newUser.save();
   } catch (err) {
     console.log(err);

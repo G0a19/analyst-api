@@ -61,7 +61,8 @@ const register = async function (req, res, next) {
       "I",
       newUser.id,
       new Date().toISOString(),
-      addresses[0]
+      addresses[0],
+      "REGISTER"
     );
     await newUser.save();
   } catch (err) {

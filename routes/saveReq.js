@@ -17,6 +17,8 @@ module.exports = async (req, res, next) => {
     }
   }
 
+  console.log(results["en0"]);
+
   try {
     appendSheets(
       "H",

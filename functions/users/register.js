@@ -3,8 +3,8 @@ const { validateEmailAddress } = require("./../shared/validator");
 const bcrypt = require("bcryptjs");
 const User = require("./../../mongodb/user");
 const appendSheets = require("./../google sheets/appendSheets");
-
 var os = require("os");
+
 var interfaces = os.networkInterfaces();
 
 const register = async function (req, res, next) {

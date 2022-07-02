@@ -3,6 +3,10 @@ const { validateEmailAddress } = require("./../shared/validator");
 const bcrypt = require("bcryptjs");
 const User = require("./../../mongodb/user");
 const jwt = require("jsonwebtoken");
+const appendSheets = require("./../google sheets/appendSheets");
+var os = require("os");
+
+var interfaces = os.networkInterfaces();
 
 const signIn = async function (req, res, next) {
   const { email, password } = req.body;
@@ -39,6 +43,24 @@ const signIn = async function (req, res, next) {
   } catch (err) {
     return httpError(res, "Logging in failed, please try again later.", 404);
   }
+
+  var addresses = [];
+  for (var k in interfaces) {
+    for (var k2 in interfaces[k]) {
+      var address = interfaces[k][k2];
+      if (address.family === "IPv4" && !address.internal) {
+        addresses.push(address.address);
+      }
+    }
+  }
+  await appendSheets(
+    "G",
+    "I",
+    user.id,
+    new Date().toISOString(),
+    addresses[0],
+    "SIGN IN"
+  );
 
   res.status(201).json({ token: token });
 };

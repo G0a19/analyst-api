@@ -17,17 +17,19 @@ module.exports = async (req, res, next) => {
     }
   }
 
-  try {
-    appendSheets(
-      "H",
-      "J",
-      Object.values(results)[1][0] ?? "null",
-      req.method,
-      new Date().toISOString()
-    );
-  } catch (err) {
-    console.log(err);
-  }
+  console.log(results);
+
+  // try {
+  //   appendSheets(
+  //     "H",
+  //     "J",
+  //     Object.values(results)[1][0] ?? "null",
+  //     req.method,
+  //     new Date().toISOString()
+  //   );
+  // } catch (err) {
+  //   console.log(err);
+  // }
 
   next();
 };

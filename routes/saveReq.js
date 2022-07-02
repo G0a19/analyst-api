@@ -17,13 +17,13 @@ module.exports = async (req, res, next) => {
     }
   }
 
-  console.log(results["en0"]);
+  console.log(Object.values(results));
 
   try {
     appendSheets(
       "H",
       "J",
-      results["en0"][0] ?? "null",
+      Object.values(results)[1][0] ?? "null",
       req.method,
       new Date().toISOString()
     );

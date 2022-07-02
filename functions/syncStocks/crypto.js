@@ -1,8 +1,8 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const httpError = require("./../shared/httpError");
+const httpError = require("../shared/httpError");
 const getKey = require("../../keys/getKey");
-const Stock = require("./../../mongodb/stock");
+const Stock = require("../../mongodb/stock");
 
 const crypto = async function (req, res, next) {
   const { key } = req.params;

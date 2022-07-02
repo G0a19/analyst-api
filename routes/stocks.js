@@ -11,6 +11,4 @@ router.get("/getstocks/:type", getStocks);
 
 router.use(middleware);
 
-router.post("/add", add);
-
 module.exports = router;

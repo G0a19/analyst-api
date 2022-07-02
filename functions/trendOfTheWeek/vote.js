@@ -4,15 +4,15 @@ const TrendOfTheWeek = require("./../../mongodb/trendOfTheWeek");
 const Stocks = require("./../../mongodb/stock");
 const User = require("./../../mongodb/user");
 const Vote = require("./../../mongodb/vote");
+const addStock = require("./../stocks/add");
 
 const createNewTrend = require("./functions/createNewTrend");
 
 const vote = async function (req, res, next) {
-  const { type, stockId } = req.body;
+  const { type, stockId, name } = req.body;
 
   if (!type) return httpError(res, "No type found", 404);
   if (!stockId) return httpError(res, "No stock id found", 404);
-
   let existsTrendOfTheWeek;
   try {
     existsTrendOfTheWeek = await TrendOfTheWeek.findOne({ type: type });
@@ -22,10 +22,18 @@ const vote = async function (req, res, next) {
   }
 
   let existsStock;
-  try {
-    existsStock = await Stocks.findById(stockId);
-  } catch (err) {
-    return httpError(res, "No stock found", 404);
+  let newStock;
+  if (stockId != -1) {
+    try {
+      existsStock = await Stocks.findById(stockId);
+    } catch (err) {
+      return httpError(res, "No stock found", 404);
+    }
+
+    if (!existsStock) return httpError(res, "No stock found", 404);
+  } else {
+    if (!name) return httpError(res, "No name id found", 404);
+    newStock = await addStock(name, type);
   }
 
   let existsUser;
@@ -34,14 +42,15 @@ const vote = async function (req, res, next) {
   } catch (err) {
     return httpError(res, "No user found", 404);
   }
+  if (!existsUser) return httpError(res, "No user found", 404);
 
   let newTrendOfTheWeek = false;
   let newVote = new Vote({
     userId: existsUser.id,
-    stockId: existsStock.id,
+    stockId: existsStock ? existsStock.id : newStock.id,
   });
 
-  if (existsStock.type !== type)
+  if (existsStock && existsStock.type !== type)
     return httpError(res, "The trend no match with the stock", 404);
 
   if (!existsTrendOfTheWeek) {
@@ -51,8 +60,8 @@ const vote = async function (req, res, next) {
       allUsers: [existsUser.id],
       stocks: [
         {
-          stockName: existsStock.name,
-          stockId: existsStock.id,
+          stockName: existsStock ? existsStock.name : newStock.name,
+          stockId: existsStock ? existsStock.id : newStock.id,
           users: [existsUser.id],
         },
       ],
@@ -62,6 +71,7 @@ const vote = async function (req, res, next) {
   }
 
   if (newTrendOfTheWeek) {
+    await newStock.save();
     return await createNewTrend(newTrendOfTheWeek, newVote, existsUser, res);
   }
 
@@ -77,8 +87,8 @@ const vote = async function (req, res, next) {
       allUsers: [existsUser.id],
       stocks: [
         {
-          stockName: existsStock.name,
-          stockId: existsStock.id,
+          stockName: existsStock ? existsStock.name : newStock.name,
+          stockId: existsStock ? existsStock.id : newStock.id,
           users: [existsUser.id],
         },
       ],
@@ -98,6 +108,15 @@ const vote = async function (req, res, next) {
     (user) => user == existsUser.id
   );
   if (userIsThere) return httpError(res, "User is already vote", 404);
+
+  if (newStock) {
+    try {
+      await newStock.save();
+    } catch (err) {
+      console.log(err);
+      return httpError(res, "Something went wrong please try again later", 404);
+    }
+  }
 
   const stocksIsExists = existsTrendOfTheWeek.stocks.findIndex(
     (stock) => stockId == stock.stockId
@@ -119,8 +138,8 @@ const vote = async function (req, res, next) {
   }
 
   existsTrendOfTheWeek.stocks.push({
-    stockName: existsStock.name,
-    stockId: existsStock.id,
+    stockName: newStock.name,
+    stockId: newStock.id,
     users: [existsUser.id],
   });
   existsTrendOfTheWeek.allUsers.push(existsUser.id);

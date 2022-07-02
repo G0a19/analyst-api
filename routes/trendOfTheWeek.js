@@ -10,10 +10,13 @@ const Vote = require("./../mongodb/vote");
 const vote = require("./../functions/trendOfTheWeek/vote");
 const myVotes = require("./../functions/trendOfTheWeek/myVotes");
 const deleteMyVote = require("../functions/trendOfTheWeek/deleteMyVote");
+const getTrend = require("../functions/trendOfTheWeek/getTrend");
 
 const router = express.Router();
 
 router.get("/myvotes/:userid", myVotes);
+
+router.get("/gettrend/:tredtype", getTrend);
 
 router.use(middleware);
 

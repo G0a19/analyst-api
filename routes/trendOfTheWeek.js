@@ -11,12 +11,18 @@ const vote = require("./../functions/trendOfTheWeek/vote");
 const myVotes = require("./../functions/trendOfTheWeek/myVotes");
 const deleteMyVote = require("../functions/trendOfTheWeek/deleteMyVote");
 const getTrend = require("../functions/trendOfTheWeek/getTrend");
+const getAllTrendTypes = require("../functions/trendOfTheWeek/getAllTrendTypes");
+const getDatesOfTrends = require("../functions/trendOfTheWeek/getDatesOfTrends");
 
 const router = express.Router();
 
 router.get("/myvotes/:userid", myVotes);
 
 router.get("/gettrend/:tredtype", getTrend);
+
+router.get("/getalltrendtypes", getAllTrendTypes);
+
+router.get("/getdatesoftrends/:type", getDatesOfTrends);
 
 router.use(middleware);
 

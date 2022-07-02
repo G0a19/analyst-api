@@ -75,35 +75,6 @@ const vote = async function (req, res, next) {
     return await createNewTrend(newTrendOfTheWeek, newVote, existsUser, res);
   }
 
-  const today = new Date();
-  if (
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7) <
-    new Date(existsTrendOfTheWeek.date)
-  ) {
-    existsTrendOfTheWeek.type = existsTrendOfTheWeek.type + " not active";
-    newTrendOfTheWeek = new TrendOfTheWeek({
-      type: type,
-      date: new Date().toISOString(),
-      allUsers: [existsUser.id],
-      stocks: [
-        {
-          stockName: existsStock ? existsStock.name : newStock.name,
-          stockId: existsStock ? existsStock.id : newStock.id,
-          users: [existsUser.id],
-        },
-      ],
-    });
-    newVote.trendOfTheWeekId = newTrendOfTheWeek.id;
-
-    try {
-      await existsTrendOfTheWeek.save();
-      return await createNewTrend(newTrendOfTheWeek, newVote, existsUser, res);
-    } catch (err) {
-      console.log(err);
-      return httpError(res, "Something went wrong please try again later", 404);
-    }
-  }
-
   const userIsThere = existsTrendOfTheWeek.allUsers.find(
     (user) => user == existsUser.id
   );

@@ -9,17 +9,39 @@ const syncTrendOfWeek = async function () {
   let currentTrendOfTheWeeks = await TrendOfTheWeek.find();
   currentTrendOfTheWeeks.forEach(async (trend, index) => {
     const date = new Date(trend.date);
-    if (today.getDay() === 6 && date.getUTCDate() !== today.getUTCDate()) {
+    const nextWeekOfTheDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 7
+    );
+    if (
+      nextWeekOfTheDate.getTime() < today.getTime() &&
+      today.getDay() === 6 &&
+      date.getUTCDate() !== today.getUTCDate() &&
+      !trend.type.includes("no active")
+    ) {
+      const newTrend = new TrendOfTheWeek({
+        type: trend.type,
+        date: today.toISOString(),
+        allUsers: [],
+        stocks: [],
+      });
       trend.type = trend.type + " no active";
       try {
         await trend.save();
       } catch (err) {
         console.log(err);
       }
-      trend.stocks.forEach(async (stock) => {
+      for (
+        let numberOfStock = 0;
+        numberOfStock < trend.stocks.length;
+        numberOfStock++
+      ) {
         let currentStock;
         try {
-          currentStock = await Stocks.findById(stock.stockId);
+          currentStock = await Stocks.findById(
+            trend.stocks[numberOfStock].stockId
+          );
         } catch (err) {
           console.log(err);
         }
@@ -29,10 +51,11 @@ const syncTrendOfWeek = async function () {
         currentStock.type = currentStock.type + " no active";
         try {
           await currentStock.save();
+          await newTrend.save();
         } catch (err) {
           console.log(err);
         }
-      });
+      }
     }
   });
 };

@@ -2,7 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const httpError = require("../shared/httpError");
 const getKey = require("../../keys/getKey");
-const Stock = require("../../mongodb/stock");
+const ExistStock = require("../../mongodb/existStocks");
 
 const crypto = async function (req, res, next) {
   const { key } = req.params;
@@ -33,10 +33,9 @@ const crypto = async function (req, res, next) {
       ];
 
       $(elemSelector).each((parentIdx, parentElem) => {
-        if (parentIdx <= 10) {
+        if (parentIdx <= 9) {
           let keyIdx = 0;
           let coinObj = {};
-          // if (parentIdx <= cryptoNumber) {
           $(parentElem)
             .children()
             .each((childIdx, childElem) => {
@@ -53,7 +52,6 @@ const crypto = async function (req, res, next) {
             });
 
           coinArr.push(coinObj);
-          // }
         } else {
           const cryptoSymbol = $(parentElem)
             .find("td:nth-child(3) .crypto-symbol")
@@ -81,11 +79,11 @@ const crypto = async function (req, res, next) {
 
   for (numberOfCrypto = 0; numberOfCrypto < coinArr.length; numberOfCrypto++) {
     try {
-      const currectStock = await Stock.findOne({
+      const currectStock = await ExistStock.findOne({
         name: coinArr[numberOfCrypto].name,
       });
       if (currectStock) continue;
-      const newStock = new Stock({
+      const newStock = new ExistStock({
         name: coinArr[numberOfCrypto].name,
         type: "crypto",
         dateAdded: new Date().toISOString(),

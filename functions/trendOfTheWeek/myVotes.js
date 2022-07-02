@@ -12,6 +12,8 @@ const myVotes = async function (req, res, next) {
     return httpError(res, "No user found", 404);
   }
 
+  if (!existsUser) return httpError(res, "No user found", 404);
+
   const votes = [];
   try {
     for (

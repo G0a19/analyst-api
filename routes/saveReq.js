@@ -17,13 +17,13 @@ module.exports = async (req, res, next) => {
     }
   }
 
-  console.log(Object.values(results));
+  console.log(Object.values(results)[0][0]);
 
   try {
     appendSheets(
       "H",
       "J",
-      Object.values(results)[1][0] ?? "null",
+      Object.values(results)[0][0] ?? "null",
       req.method,
       new Date().toISOString()
     );

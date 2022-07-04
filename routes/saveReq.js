@@ -5,7 +5,10 @@ module.exports = async (req, res, next) => {
     appendSheets(
       "H",
       "K",
-      req.connection.remoteAddress,
+      req.connection.remoteAddress
+        .replace("::ffff:", "")
+        .replace(":", "")
+        .replace(":", ""),
       req.method,
       req.originalUrl,
       new Date().toISOString()

@@ -62,12 +62,12 @@ const syncReq = async function () {
     });
   }
 
-  // await googleSheets.spreadsheets.values.clear({
-  //   spreadsheetId: process.env.SHEETS_ID,
-  //   range: "H:J",
-  // });
+  await googleSheets.spreadsheets.values.clear({
+    spreadsheetId: process.env.SHEETS_ID,
+    range: "H:J",
+  });
 
-  // await appendSheets("H", "J", "IP", "METHOD", "DATE");
+  await appendSheets("H", "J", "IP", "METHOD", "DATE");
 };
 
 cron.schedule("0 1 * * *", async function () {

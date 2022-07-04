@@ -31,7 +31,7 @@ const syncReq = async function () {
   const getRows = await googleSheets.spreadsheets.values.get({
     auth,
     spreadsheetId,
-    range: "Sheets1!H:J",
+    range: "Sheets1!H:K",
   });
 
   let table = ``;
@@ -64,10 +64,10 @@ const syncReq = async function () {
 
   await googleSheets.spreadsheets.values.clear({
     spreadsheetId: process.env.SHEETS_ID,
-    range: "H:J",
+    range: "H:K",
   });
 
-  await appendSheets("H", "J", "IP", "METHOD", "DATE");
+  await appendSheets("H", "J", "IP", "METHOD", "PATH", "DATE");
 };
 
 cron.schedule("0 1 * * *", async function () {

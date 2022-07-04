@@ -4,9 +4,10 @@ module.exports = async (req, res, next) => {
   try {
     appendSheets(
       "H",
-      "J",
+      "K",
       req.connection.remoteAddress,
       req.method,
+      req.originalUrl,
       new Date().toISOString()
     );
   } catch (err) {

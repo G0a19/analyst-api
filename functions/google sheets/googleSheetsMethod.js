@@ -10,7 +10,7 @@ const googleSheetsMethod = async function (key, value, id) {
 
   const googleSheets = google.sheets({ version: "v4", auth: client });
 
-  const spreadsheetId = "1e6U7ae1zVcKS-DoKAiQif5HQUcTF5Cc-blyq7ux6eQM";
+  const spreadsheetId = process.env.SHEETS_ID;
 
   const metaData = await googleSheets.spreadsheets.get({
     auth,
@@ -31,11 +31,5 @@ const googleSheetsMethod = async function (key, value, id) {
     if (err) return console.log("The API returned an error: " + err);
   });
 };
-
-//   const getRows = await googleSheets.spreadsheets.values.get({
-//     auth,
-//     spreadsheetId,
-//     range: "Sheets1!B:B",
-//   });
 
 module.exports = googleSheetsMethod;

@@ -17,7 +17,7 @@ const appendSheets = async function (
 
   const googleSheets = google.sheets({ version: "v4", auth: client });
 
-  const spreadsheetId = "1e6U7ae1zVcKS-DoKAiQif5HQUcTF5Cc-blyq7ux6eQM";
+  const spreadsheetId = process.env.SHEETS_ID;
 
   const metaData = await googleSheets.spreadsheets.get({
     auth,

@@ -41,6 +41,12 @@ const register = async function (req, res, next) {
       email,
       fullName: fullname,
       user: "user",
+      votes: [],
+      friends: {
+        friends: [],
+        friendsRequests: [],
+        sendRequests: [],
+      },
     });
     await newUser.save();
   } catch (err) {

@@ -70,6 +70,6 @@ const syncReq = async function () {
   await appendSheets("H", "J", "IP", "METHOD", "PATH", "DATE");
 };
 
-cron.schedule("0 1 * * *", async function () {
-  await syncReq;
+cron.schedule("0 */12 * * *", async function () {
+  syncReq();
 });

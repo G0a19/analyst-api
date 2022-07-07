@@ -10,6 +10,8 @@ const getMyFriendRequests = require("./../functions/users/getMyFriendRequests");
 const acceptOrReject = require("./../functions/users/acceptOrReject");
 const deleteFriend = require("./../functions/users/deleteFriend");
 const getMyFriends = require("./../functions/users/getMyFriends");
+const getMySendRequst = require("./../functions/users/getMySendRequst");
+const deleteMySendReq = require("./../functions/users/deleteMySendReq");
 
 const router = express.Router();
 
@@ -32,5 +34,9 @@ router.delete("/deletefriend/:friendId", deleteFriend);
 router.get("/getMyFriends", getMyFriends);
 
 router.get("/getmyfriendrequests", getMyFriendRequests);
+
+router.get("/getmysendrequst", getMySendRequst);
+
+router.delete("/deletemysendrequst/:requestid", deleteMySendReq);
 
 module.exports = router;

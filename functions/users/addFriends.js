@@ -32,14 +32,18 @@ const addFriends = async function (req, res, next) {
 
   let friendRequest;
   try {
-    friendRequest = await FriendsRequest.findOne({
+    friendRequest = await FriendsRequest.find({
       sender: req.userData.userId,
     });
   } catch (err) {
     return httpError(res, "Can not send a friend request to this user", 404);
   }
 
-  if (friendRequest)
+  const isFriendReqExcist = friendRequest.some(
+    (friend) => friend.reciver == friendId
+  );
+
+  if (isFriendReqExcist)
     return httpError(res, "Can not send a friend request to this user", 404);
 
   const newRequest = new FriendsRequest({
